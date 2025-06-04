@@ -6,7 +6,6 @@ screen.setup(width=800, height=600)
 screen.bgcolor("black")
 screen.tracer(0)
 
-# Ball speed
 dx = 5
 dy = 5
 
@@ -50,13 +49,26 @@ bollen.color("white")
 bollen.penup()
 bollen.setposition(0, 0)
 
+score1 = 0
+score2 = 0
+
+scoreboard = Turtle()
+scoreboard.color("white")
+scoreboard.penup()
+scoreboard.hideturtle()
+scoreboard.goto(0, 260)
+scoreboard.write(f"{score2}   {score1}", align="center", font=("Courier", 24, "normal"))
+
+def update_score():
+    scoreboard.clear()
+    scoreboard.write(f"{score2}   {score1}", align="center", font=("Courier", 24, "normal"))
+
 screen.listen()
 screen.onkey(flytta_upp1, "Up")
 screen.onkey(flytta_ned1, "Down")
 screen.onkey(flytta_upp2, "w")
 screen.onkey(flytta_ned2, "s")
 
-# Game loop
 while_game_is_running = True
 while while_game_is_running:
     screen.update()
@@ -65,13 +77,19 @@ while while_game_is_running:
     bollen.setx(bollen.xcor() + dx)
     bollen.sety(bollen.ycor() + dy)
 
-
     if bollen.ycor() > 290 or bollen.ycor() < -290:
         dy *= -1
 
-    if bollen.xcor() > 390 or bollen.xcor() < -390:
-        bollen.setx(0)
-        bollen.sety(0)
+    if bollen.xcor() > 390:
+        score2 += 1
+        update_score()
+        bollen.goto(0, 0)
+        dx *= -1
+
+    if bollen.xcor() < -390:
+        score1 += 1
+        update_score()
+        bollen.goto(0, 0)
         dx *= -1
 
     if (bollen.xcor() > 340 and bollen.xcor() < 350) and (bollen.ycor() < spelfigur1.ycor() + 50 and bollen.ycor() > spelfigur1.ycor() - 50):
